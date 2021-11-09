@@ -34,6 +34,7 @@ env:
   - NODE_VERSION="16.0"
 
 before_install:
+  - brew info llvm
   - node -v
   - nvm ls
   - nvm install $NODE_VERSION
