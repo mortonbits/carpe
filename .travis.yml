@@ -44,10 +44,9 @@ before_install:
   # - brew info llvm
 
 script:
-  - cargo install librocksdb-sys
-  # - cd src-tauri && cargo build
-  # - yarn install --frozen-lockfile
-  # - yarn run tauri build
+  - cd src-tauri && cargo build
+  - yarn install --frozen-lockfile
+  - yarn run tauri build
   
 
 # deploy:
