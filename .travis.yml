@@ -31,9 +31,7 @@ addons:
 #   - if [ $TRAVIS_OS_NAME = windows ]; then choco install -y visualstudio2019buildtools --package-parameters "--productId visualstudio2019community --allWorkloads --includeRecommended --includeOptional --passive --locale en-US" rust; fi
 
 env:
-  - NODE_VERSION="16.0"
-  - LDFLAGS="-L/usr/local/opt/llvm/lib"
-  - CPPFLAGS="-I/usr/local/opt/llvm/include"
+  - NODE_VERSION="16.0" LDFLAGS="-L/usr/local/opt/llvm/lib" CPPFLAGS="-I/usr/local/opt/llvm/include"
 
 before_install:
   - brew info llvm
