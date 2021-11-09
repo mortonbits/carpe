@@ -9,6 +9,7 @@ addons:
   homebrew:
     packages:
     - llvm
+    - gmp
 
 
 # env:
@@ -42,6 +43,7 @@ before_install:
   # - brew info llvm
 
 script:
+  - cd src-tauri && cargo build
   - yarn install --frozen-lockfile
   - yarn run tauri build
   
