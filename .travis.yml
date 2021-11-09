@@ -32,6 +32,8 @@ addons:
 
 env:
   - NODE_VERSION="16.0"
+  - LDFLAGS="-L/usr/local/opt/llvm/lib"
+  - CPPFLAGS="-I/usr/local/opt/llvm/include"
 
 before_install:
   - brew info llvm
@@ -44,7 +46,8 @@ before_install:
   # - brew info llvm
 
 script:
-  - cd src-tauri && cargo build
-  - yarn install --frozen-lockfile
-  - yarn run tauri build
+  - cargo install librocksdb-sys
+  # - cd src-tauri && cargo build
+  # - yarn install --frozen-lockfile
+  # - yarn run tauri build
   
