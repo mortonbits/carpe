@@ -45,7 +45,7 @@ before_install:
 #   - nvm ls
 #   - nvm install $NODE_VERSION
 #   - node -v
-#   - npm install --global yarn
+  - npm install yarn
   # - brew install --with-toolchain llvm
   # - brew info llvm
 
