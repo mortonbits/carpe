@@ -26,10 +26,12 @@ jobs:
       - name: Show Clang on Windows
         if: ${{ matrix.os == 'windows-latest' }}
         run: dir C:\\msys64\\mingw64\\bin
+      - name: install visualstudio2019buildtools
+        run: choco install -y visualstudio2019buildtools --package-parameters "--productId visualstudio2019community --allWorkloads --includeRecommended --includeOptional --passive --locale en-US"
       - name: yarn info
         run: yarn install
       - name: Build
-        run: yarn run tauri build
+        run: RUST_BACKTRACE=1 yarn run tauri build
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v1-release
         with:
