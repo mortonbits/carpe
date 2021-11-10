@@ -6,9 +6,6 @@ on:
     branches:
       # Push events on main branch
       - ping
-    # Sequence of patterns matched against refs/tags
-    tags:
-      - win*           # Push events to v1.0, v1.1, and v1.9 tags
 
 jobs:
   publish:
