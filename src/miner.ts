@@ -66,10 +66,24 @@ export const submitBacklog = async () => {
       return res
     })
     .catch((e) => {
-      raise_error(e);
+      raise_error(e, false);
       backlog_in_progress.set(false);
     });
 }
+
+export const submitProofZero = async () => {
+  backlog_in_progress.set(true);
+  invoke("debug_submit_proof_zero", {})
+    .then((res) => {
+      console.log(res);
+      responses.set(res as string);
+      return res
+    })
+    .catch((e) => {
+      raise_error(e, false);
+    });
+}
+
 
 export const startTowerListener = async () => {
   await invoke("start_tower_listener", {})
@@ -79,7 +93,7 @@ export const startTowerListener = async () => {
       responses.set(res as string);
       return res
     })
-    .catch((e) => raise_error(e));
+    .catch((e) => raise_error(e, false));
 }
 
 
@@ -110,7 +124,7 @@ export const getTowerChainView = async () => {
     .then((res: TowerStateView) => {
       console.log(res);
       refreshOnChainData(res);
-      responses.set(res);
+      responses.set(JSON.stringify(res));
 
     })
     .catch((e) => raise_error(e, true));
@@ -141,7 +155,7 @@ export async function disableMining(): Promise<boolean> {
 
   await killTowerListener()
     .catch(e => {
-      raise_error(e);
+      raise_error(e, false);
       return false
     });
   // set mining to disabled
@@ -195,3 +209,22 @@ export interface ProofProgress {
 
 export const proofState = writable<ProofProgress>({});
 
+export function setDebugProdTest(env: string) {
+  invoke("set_env", { env: env })
+    .then((res: string) => {
+      window.alert(res);
+      nodeEnv.set(res);
+    })
+    .catch((error) => raise_error(error, false));
+}
+
+export function getEnv() {
+  invoke("get_env", { })
+    .then((res: string) => {
+      // window.alert(res);
+      nodeEnv.set(res);
+    })
+    .catch((error) => raise_error(error, false));
+}
+
+export const nodeEnv = writable<string>("");

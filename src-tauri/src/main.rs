@@ -10,13 +10,12 @@ pub mod configs_network;
 pub mod configs_profile;
 pub mod carpe_error;
 pub mod seed_peers;
-use std::env;
 
 
 use crate::{commands::*};
 
 fn main() {
-  // env::set_var("NODE_ENV", "test");
+  
 
 	tauri::Builder::default()
 	.invoke_handler(tauri::generate_handler![
@@ -42,6 +41,9 @@ fn main() {
     //Tower
     start_tower_listener,
     submit_backlog,
+    get_env,
+    set_env,
+    debug_submit_proof_zero,
  
     // Debug
     init_swarm,
