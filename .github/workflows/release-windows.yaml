@@ -5,7 +5,7 @@ on:
     tags:
       - '*win*'
     branches:
-      - 'ping':
+      - 'ping'
 
 jobs:
   publish:
