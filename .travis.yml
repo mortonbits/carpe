@@ -40,11 +40,12 @@ env:
   - NODE_VERSION="16.0"
 
 before_install:
-  - node -v
-  - nvm ls
-  - nvm install $NODE_VERSION
-  - node -v
-  - npm install --global yarn
+  - choco install nodejs-lts
+#   - node -v
+#   - nvm ls
+#   - nvm install $NODE_VERSION
+#   - node -v
+#   - npm install --global yarn
   # - brew install --with-toolchain llvm
   # - brew info llvm
 
