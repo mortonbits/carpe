@@ -24,7 +24,7 @@ addons:
       - libvips-dev
 
 install:
-  - choco install -y rust llvm gmp;
+  - choco install -y rust;
 
 #jobs:
 #  include:
