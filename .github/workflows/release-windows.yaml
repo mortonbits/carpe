@@ -2,8 +2,10 @@ name: Build Windows
 
 on:
   push:
-    branch:
-      - 'ping'
+    tags:
+      - '*win*'
+    branches:
+      - 'ping':
 
 jobs:
   publish:
