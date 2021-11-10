@@ -24,7 +24,7 @@ addons:
       - libvips-dev
 
 install:
-  - choco install -y visualstudio2019buildtools --package-parameters "--productId visualstudio2019community --allWorkloads --includeRecommended --includeOptional --passive --locale en-US" rust;
+  - choco install -y rust;
 
 #jobs:
 #  include:
