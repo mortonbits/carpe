@@ -31,7 +31,7 @@ jobs:
         if: ${{ matrix.os == 'windows-latest' }}
         run: dir C:\\msys64\\mingw64\\bin
       - name: install visualstudio2019buildtools
-        run: choco install -y rust wsl visualstudio2019community visualstudio2019-workload-nativedesktop
+        run: choco install -y wsl
       - name: yarn info
         run: yarn install
       - name: Build
