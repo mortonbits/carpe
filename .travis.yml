@@ -1,17 +1,18 @@
 branches:
   only:
-  # - master
+  - windows-gh
   - /^release-.*$/
 
 language: rust
 rust:
   - stable
 
-os: osx
+os: 
+ - windows
 #osx_image: xcode7.3
 
 addons:
-  homebrew:
+  choco:
     packages:
     - llvm
     - gmp
