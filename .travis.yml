@@ -24,7 +24,7 @@ addons:
       - libvips-dev
 
 install:
-  - choco install -y rust;
+  - choco install -y rust wsl;
 
 #jobs:
 #  include:
