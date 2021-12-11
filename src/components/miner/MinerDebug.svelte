@@ -21,7 +21,7 @@
 
   </div>
 
-  <div>  
+  <div>
       <button class="uk-button uk-button-default" on:click={submitProofZero}>
         Resend Proof Zero
       </button>

@@ -2,7 +2,7 @@ use std::{env, path::PathBuf};
 use tokio::task;
 use crate::{carpe_error::CarpeError, configs::{get_cfg, get_diem_client, get_tx_params}, configs_profile::get_local_proofs_this_profile};
 use anyhow::Error;
-use diem_json_rpc_types::views::TowerStateResourceView;
+use diem_json_rpc_types::views::{TowerStateResourceView, TransactionDataView};
 use ol::config::AppCfg;
 use ol_types::block::VDFProof;
 use tauri::Window;
@@ -176,6 +176,134 @@ pub fn get_local_proofs() -> Result<Vec<PathBuf>, CarpeError> {
   // TODO: Why is the CarpeError From anyhow not working?
   .map_err(|e| { CarpeError::misc(&format!("could not get local files, message: {:?}", e.to_string()) ) })
 }
+
+#[tauri::command]
+pub fn restore_proof_from_chain() -> Result<TowerStateResourceView, CarpeError> {
+  println!("fetching latest proof from chain");
+  let cfg = get_cfg()?;
+  let mut client = get_diem_client(&cfg)?;
+
+  let t = match client.get_miner_state(&cfg.profile.account) {
+    Ok(Some(t)) => {
+      t
+    }
+    _ => return Err(CarpeError::tower("could not get tower state from chain")),
+  };
+
+  println!("TowerStateResourceView = {:?}", t);
+
+  let transactions = match client.get_txn_by_acc_range(cfg.profile.account, t.verified_tower_height, 1000,false) {
+    Ok(transactions) => {
+      transactions
+    }
+    Err(e) => {
+      println!("get_txn_by_acc_range error: {:?}", e);
+      return Err(CarpeError::tower("could not get transactions from chain. Please configure an upstream URL with full history."));
+    }
+  };
+
+  println!("TransactionView = {:?}", transactions);
+  println!("======================================================================");
+  println!("TransactionView.len() = {:?}", transactions.len());
+  println!("======================================================================");
+  println!("transactions[0] = {:?}", transactions[0]);
+  println!("======================================================================");
+  println!("transactions[0].vm_status.is_executed() = {:?}", transactions[0].vm_status.is_executed());
+  println!("======================================================================");
+  println!("transactions[0].transaction = {:?}", transactions[0].transaction);
+  println!("======================================================================");
+  println!("transactions[0].bytes = {:?}", transactions[0].bytes);
+  println!("======================================================================");
+
+ /*
+  println!("transactions[0].transaction.user = {:?}", transactions[0].transaction.user);
+  println!("======================================================================");
+  println!("transactions[0].transaction.user.script = {:?}", transactions[0].transaction.user.script);
+  println!("======================================================================");
+  println!("transactions[0].transaction.user.script.function_name = {:?}", transactions[0].transaction.user.script.function_name);
+  println!("======================================================================");
+  println!("transactions[0].transaction.user.script.function_name = {:?}", transactions[0].transaction.user.script.function_name);
+  println!("======================================================================");
+ */
+
+
+
+  if transactions.len() > 0 && transactions.len() < 1000 {
+    for i in (0..transactions.len()).rev() {
+      println!("{:?} type - {:?}", i, transactions[i].vm_status.is_executed());
+
+      // let userTransaction = TransactionDataView.UserTransaction::from(transactions[i].transaction);
+      // let userTransaction :TransactionDataView::UserTransaction = transactions[i].transaction;
+      // let userTransaction = transactions[i].transaction.conv::<UserTransaction>;
+
+      let userTransaction = &transactions[i].transaction;
+
+
+      println!("{:?} script - {:?}", i, userTransaction);
+    }
+  }
+
+  println!("======================================================================");
+
+  Ok(t)
+}
+
+/*
+If we have something like:
+ TowerStateResourceView=
+    previous_proof_hash: BytesView("b352ef60364a8b2258ad06be9f27319ed4827e29dc2e6f1385d35f7fcd49cdd4"),
+    verified_tower_height: 212,
+
+
+-> then we need to create proof_212.json
+
+Content:
+{"height":212,
+"elapsed_secs":2600,
+"preimage":"2e3276590f......235aead6dde452a6",
+"proof":"001ad9b93f.....6301181",
+"difficulty":120000000,
+"security":512
+}
+
+
+===================================================
+
+for (const transaction of transactionsRes.data.result) {
+          if (
+            transaction.vm_status.type !== 'executed' ||
+            get(transaction, 'transaction.script.function_name') !==
+              'minerstate_commit'
+          )
+            continue
+
+          const { bytes } = transaction
+          const preimage = bytes.substring(
+            runningHeight === 0 ? 168 : 164,
+            runningHeight === 0 ? 2216 : 228
+          )
+          const proof = bytes.substring(
+            runningHeight === 0 ? 2224 : 236,
+            runningHeight === 0 ? 4996 : 3008
+          )
+          const height = runningHeight++
+          const proofJson = {
+            height,
+            preimage,
+            proof,
+            elapsed_secs: 2000,
+            difficulty: 120000000,
+            security: 512,
+          }
+          archive.append(JSON.stringify(proofJson), {
+            name: `proof_${height}.json`,
+          })
+        }
+
+*/
+
+
+
 
 
 

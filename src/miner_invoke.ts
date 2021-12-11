@@ -148,3 +148,16 @@ export const submitProofZero = async () => {
     });
 }
 
+export const restoreProofFromChain = async () => {
+  console.log("getOnchainTowerState")
+
+  invoke("restore_proof_from_chain", {})
+      .then((res) => {
+        console.log(res);
+        responses.set(res as string);
+        return res
+      })
+      .catch((e) => {
+        raise_error(e, false);
+      });
+};

@@ -70,7 +70,7 @@ fn main() {
     get_env,
     set_env,
     debug_submit_proof_zero,
- 
+    restore_proof_from_chain,
     // Debug
     init_swarm,
     swarm_miner,

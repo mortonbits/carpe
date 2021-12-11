@@ -3,6 +3,7 @@
   import MinerProgres from "./MinerProgres.svelte";
   import TowerState from "./cards/TowerState.svelte";
   import MinerDebug from "./MinerDebug.svelte";
+  import MinerFetchProof from "./MinerFetchProof.svelte";
   import CantStart from "./cards/CantStart.svelte";
   import { debugMode } from "../../debug";
   import { signingAccount } from "../../accounts";
@@ -69,6 +70,8 @@ import { onMount } from "svelte";
       </div>
     {/if}
   </div>
+
+   <MinerFetchProof />
 
   {#if debug}
     <MinerDebug />
